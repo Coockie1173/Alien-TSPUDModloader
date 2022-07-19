@@ -98,23 +98,20 @@ namespace AlienModLoader.FileHandler
             {
                 string FullPath = "";
                 string NewLoc = execPath + ModifyPath;
-                foreach (string s in NewLoc.Split('\\'))
+                string[] buf = NewLoc.Split('\\');
+                for (int i = 0; i < buf.Length - 1; i++)
                 {
-                    //not a file
-                    if (!s.Contains('.'))
+                    FullPath += buf[i] + '\\';
+                    if (!Directory.Exists(FullPath))
                     {
-                        FullPath += s + "\\";
-                        if (!Directory.Exists(FullPath))
-                        {
-                            Directory.CreateDirectory(FullPath);
-                        }
+                        Directory.CreateDirectory(FullPath);
                     }
                 }
             }
             //directories generated, now iterate over changed files with xdelta
             string BackupFolder = ProgramFolder + "\\FileBackup";
             string PatchFolder = execPath;
-            string GameFolder = HandlerSettings.ProgramSettings["AlienPath"];
+            string GameFolder = HandlerSettings.ProgramSettings["TSPUDPATH"];
 
             foreach(string s in ChangedFiles)
             {
@@ -143,13 +140,13 @@ namespace AlienModLoader.FileHandler
                 p.WaitForExit();*/
             }
 
-            if(File.Exists(ProgramFolder + "\\Mod.AIMOD"))
+            if(File.Exists(ProgramFolder + "\\Mod.TSPUDMOD"))
             {
-                File.Delete(ProgramFolder + "\\Mod.AIMOD");
+                File.Delete(ProgramFolder + "\\Mod.TSPUDMOD");
             }
 
             //ZIP but with different extension hehe
-            ZipFile.CreateFromDirectory(PatchFolder, ProgramFolder + "\\Mod.AIMOD");
+            ZipFile.CreateFromDirectory(PatchFolder, ProgramFolder + "\\Mod.TSPUDMOD");
             //clean up when done
             Directory.Delete(execPath, true);
         }
@@ -163,13 +160,13 @@ namespace AlienModLoader.FileHandler
         public void GetFiles(out string AIPath, out string[] files)
         {
 #if !DEBUG
-            List<string> extensions = new List<string> { ".TXT", ".PAK", ".BIN", ".BML", ".XML", ".XSD", ".WEM", ".PCK", ".CACHED", ".PKG", ".USM", ".BNK"};
+            //List<string> extensions = new List<string> { ".TXT", ".PAK", ".BIN", ".BML", ".XML", ".XSD", ".WEM", ".PCK", ".CACHED", ".PKG", ".USM", ".BNK"};
 #endif
 #if DEBUG
-            List<string> extensions = new List<string> { ".TXT" };
+            //List<string> extensions = new List<string> { ".TXT" };
 #endif
-            AIPath = HandlerSettings.ProgramSettings["AlienPath"];
-            files = Directory.GetFiles(AIPath + "\\DATA", "*.*", SearchOption.AllDirectories).Where(x => extensions.IndexOf(Path.GetExtension(x)) >= 0).ToArray();
+            AIPath = HandlerSettings.ProgramSettings["TSPUDPATH"];
+            files = Directory.GetFiles(AIPath + "\\The Stanley Parable Ultra Deluxe_Data", "*.*", SearchOption.AllDirectories).ToArray();
         }
 
         public bool ApplyMod(string ModPackPath, bool Reversed = false)
@@ -190,7 +187,7 @@ namespace AlienModLoader.FileHandler
             //List<string> ModifiedFiles = new List<string>();
 
             string ReversedText = (Reversed == true ? "_reverse" : "_patch");
-            string GameFolder = HandlerSettings.ProgramSettings["AlienPath"];
+            string GameFolder = HandlerSettings.ProgramSettings["TSPUDPATH"];
 
             string[] Files = Directory.GetFiles(PatchFolder, "*" + ReversedText + ".xdelta", SearchOption.AllDirectories);
             int AmmTries = 0;

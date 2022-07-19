@@ -25,7 +25,7 @@ namespace AlienModloader
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            PathBox.Text = FileHandlerContainer.GetInstance().HandlerSettings.ProgramSettings["AlienPath"];
+            PathBox.Text = FileHandlerContainer.GetInstance().HandlerSettings.ProgramSettings["TSPUDPATH"];
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -36,8 +36,8 @@ namespace AlienModloader
             if(res == CommonFileDialogResult.Ok)
             {
                 //Sanity checking is for nerds
-                fileHandlerContainer.HandlerSettings.ProgramSettings["AlienPath"] = cofd.FileName;
-                PathBox.Text = FileHandlerContainer.GetInstance().HandlerSettings.ProgramSettings["AlienPath"];
+                fileHandlerContainer.HandlerSettings.ProgramSettings["TSPUDPATH"] = cofd.FileName;
+                PathBox.Text = FileHandlerContainer.GetInstance().HandlerSettings.ProgramSettings["TSPUDPATH"];
                 fileHandlerContainer.HandlerSettings.SaveSettings();
             }
         }
@@ -103,7 +103,7 @@ namespace AlienModloader
                 {
                     string FullPath = "";
                     string NewLoc = execPath + file.Replace(AIPath, "");
-                    foreach(string s in NewLoc.Split('\\'))
+                    /*foreach(string s in NewLoc.Split('\\'))
                     {
                         //not a file
                         if(!s.Contains('.'))
@@ -113,6 +113,15 @@ namespace AlienModloader
                             {
                                 Directory.CreateDirectory(FullPath);
                             }
+                        }
+                    }*/
+                    string[] buf = NewLoc.Split('\\');
+                    for(int i = 0; i < buf.Length - 1; i++)
+                    {
+                        FullPath += buf[i] + '\\';
+                        if (!Directory.Exists(FullPath))
+                        {
+                            Directory.CreateDirectory(FullPath);
                         }
                     }
                     File.Copy(file, NewLoc, true);                    
@@ -130,7 +139,7 @@ namespace AlienModloader
         private void button4_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "*.AIMOD|*.AIMOD";
+            ofd.Filter = "*.TSPUDMOD|*.TSPUDMOD";
 
             if(ofd.ShowDialog() == DialogResult.OK)
             {

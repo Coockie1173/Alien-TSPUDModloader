@@ -92,7 +92,6 @@
             // 
             // LoadChecksumsButton
             // 
-            this.LoadChecksumsButton.Enabled = false;
             this.LoadChecksumsButton.Location = new System.Drawing.Point(12, 253);
             this.LoadChecksumsButton.Name = "LoadChecksumsButton";
             this.LoadChecksumsButton.Size = new System.Drawing.Size(445, 23);

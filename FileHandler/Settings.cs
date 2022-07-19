@@ -18,7 +18,7 @@ namespace AlienModLoader.FileHandler
             if(!File.Exists(execPath + "\\Settings.cfg"))
             {
                 //generate new file
-                ProgramSettings.Add("AlienPath", ".");
+                ProgramSettings.Add("TSPUDPATH", ".");
                 SaveSettings();
             }
             else
