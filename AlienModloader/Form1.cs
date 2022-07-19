@@ -51,7 +51,7 @@ namespace AlienModloader
         {
             string AIPath;
             string[] files;
-            GetFiles(out AIPath, out files);
+            fileHandlerContainer.GetFiles(out AIPath, out files);
 
             CheckSumBox.Items.Clear();
             fileHandlerContainer.CRCValues.Clear();
@@ -59,23 +59,10 @@ namespace AlienModloader
             foreach (string file in files)
             {
                 CheckSumBox.Items.Add(file.Replace(AIPath, ""));
-                string CRC = CalcCRC(file);
+                string CRC = fileHandlerContainer.CalcCRC(file);
                 CheckSumBox.Items.Add(CRC);
                 fileHandlerContainer.CRCValues.Add(file.Replace(AIPath, ""), CRC);
             }
-        }
-
-        private void GetFiles(out string AIPath, out string[] files)
-        {
-            List<string> extensions = new List<string> { ".TXT", ".PAK", ".BIN", ".BML" };
-            AIPath = fileHandlerContainer.HandlerSettings.ProgramSettings["AlienPath"];
-            files = Directory.GetFiles(AIPath + "\\DATA", "*.*", SearchOption.AllDirectories).Where(x => extensions.IndexOf(Path.GetExtension(x)) >= 0).ToArray();
-        }
-
-        private string CalcCRC(string filename)
-        {
-            byte[] Data = File.ReadAllBytes(filename);
-            return String.Format("0x{0:X}", Crc32CAlgorithm.Compute(Data));
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -101,7 +88,7 @@ namespace AlienModloader
             {
                 string AIPath;
                 string[] files;
-                GetFiles(out AIPath, out files);
+                fileHandlerContainer.GetFiles(out AIPath, out files);
                 //got files!
                 string execPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
                 execPath += "\\FileBackup";
@@ -133,6 +120,42 @@ namespace AlienModloader
 
                 MessageBox.Show("Backup complete!");
             }
+        }
+
+        private void GenerateModButton_Click(object sender, EventArgs e)
+        {
+            fileHandlerContainer.GenerateModPack();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "*.AIMOD|*.AIMOD";
+
+            if(ofd.ShowDialog() == DialogResult.OK)
+            {
+                bool Apply = fileHandlerContainer.ApplyMod(ofd.FileName, false);
+                if(Apply)
+                {
+                    MessageBox.Show("Mod Applied!");
+                }
+                else
+                {
+                    MessageBox.Show("Mod Failed to install! Please verify integrity of games files and try again! To ensure your game works, verify the integrity anyways. Some files still may have been altered.");
+                }                
+            }            
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            /*OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "*.AIMOD|*.AIMOD";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                fileHandlerContainer.ApplyMod(ofd.FileName, true);
+                MessageBox.Show("Mod Removed!");
+            } */           
         }
     }
 }

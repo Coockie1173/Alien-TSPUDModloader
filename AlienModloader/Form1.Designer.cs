@@ -35,6 +35,9 @@
             this.button2 = new System.Windows.Forms.Button();
             this.LoadChecksumsButton = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.GenerateModButton = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -57,6 +60,7 @@
             // 
             // GenerateChecksumsBut
             // 
+            this.GenerateChecksumsBut.Enabled = false;
             this.GenerateChecksumsBut.Location = new System.Drawing.Point(13, 42);
             this.GenerateChecksumsBut.Name = "GenerateChecksumsBut";
             this.GenerateChecksumsBut.Size = new System.Drawing.Size(445, 23);
@@ -77,6 +81,7 @@
             // 
             // button2
             // 
+            this.button2.Enabled = false;
             this.button2.Location = new System.Drawing.Point(13, 224);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(445, 23);
@@ -87,6 +92,7 @@
             // 
             // LoadChecksumsButton
             // 
+            this.LoadChecksumsButton.Enabled = false;
             this.LoadChecksumsButton.Location = new System.Drawing.Point(12, 253);
             this.LoadChecksumsButton.Name = "LoadChecksumsButton";
             this.LoadChecksumsButton.Size = new System.Drawing.Size(445, 23);
@@ -105,11 +111,45 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // GenerateModButton
+            // 
+            this.GenerateModButton.Location = new System.Drawing.Point(12, 311);
+            this.GenerateModButton.Name = "GenerateModButton";
+            this.GenerateModButton.Size = new System.Drawing.Size(445, 23);
+            this.GenerateModButton.TabIndex = 7;
+            this.GenerateModButton.Text = "Generate Mod Files";
+            this.GenerateModButton.UseVisualStyleBackColor = true;
+            this.GenerateModButton.Click += new System.EventHandler(this.GenerateModButton_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(13, 340);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(445, 23);
+            this.button4.TabIndex = 8;
+            this.button4.Text = "Install Mod";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(13, 369);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(445, 23);
+            this.button5.TabIndex = 9;
+            this.button5.Text = "Remove Mod";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(470, 450);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.GenerateModButton);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.LoadChecksumsButton);
             this.Controls.Add(this.button2);
@@ -135,6 +175,9 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button LoadChecksumsButton;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button GenerateModButton;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
     }
 }
 
