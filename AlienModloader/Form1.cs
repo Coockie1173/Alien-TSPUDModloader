@@ -157,14 +157,14 @@ namespace AlienModloader
 
         private void button5_Click(object sender, EventArgs e)
         {
-            /*OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "*.AIMOD|*.AIMOD";
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "*.TSPUDMOD|*.TSPUDMOD";
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 fileHandlerContainer.ApplyMod(ofd.FileName, true);
                 MessageBox.Show("Mod Removed!");
-            } */           
+            }         
         }
     }
 }

@@ -72,17 +72,37 @@ namespace AlienModLoader.FileHandler
 
             List<string> ChangedFiles = new List<string>();
 
-            foreach(string file in files)
+            
+            /*foreach(string file in files)
             {
                 string MyFileKey = file.Replace(AIPath, "");
                 //check CRC
                 string MyCRC = CalcCRC(file);
-                if(MyCRC != CRCValues[MyFileKey])
+                if(CRCValues.ContainsKey(MyFileKey))
                 {
-                    //not the same!
-                    ChangedFiles.Add(MyFileKey);
+                    //key is known
+                    if (MyCRC != CRCValues[MyFileKey])
+                    {
+                        //not the same!
+                        ChangedFiles.Add(MyFileKey);
+                    }
                 }
-            }
+            }*/
+            Parallel.ForEach(files, file =>
+            {
+                string MyFileKey = file.Replace(AIPath, "");
+                //check CRC
+                string MyCRC = CalcCRC(file);
+                if (CRCValues.ContainsKey(MyFileKey))
+                {
+                    //key is known
+                    if (MyCRC != CRCValues[MyFileKey])
+                    {
+                        //not the same!
+                        ChangedFiles.Add(MyFileKey);
+                    }
+                }
+            });
             //generate folders
             string ProgramFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string execPath = ProgramFolder;
@@ -113,7 +133,7 @@ namespace AlienModLoader.FileHandler
             string PatchFolder = execPath;
             string GameFolder = HandlerSettings.ProgramSettings["TSPUDPATH"];
 
-            foreach(string s in ChangedFiles)
+            Parallel.ForEach(ChangedFiles, s =>
             {
                 Process p = new Process();
                 ProcessStartInfo startInfo = new ProcessStartInfo();
@@ -126,7 +146,7 @@ namespace AlienModLoader.FileHandler
                 p.Start();
 
                 p.WaitForExit();
-                /*
+
                 p = new Process();
                 startInfo = new ProcessStartInfo();
                 startInfo.FileName = ProgramFolder + "\\Tools\\xdelta3-3.0.11-x86_64.exe";
@@ -137,8 +157,8 @@ namespace AlienModLoader.FileHandler
                 p.StartInfo = startInfo;
                 p.Start();
 
-                p.WaitForExit();*/
-            }
+                p.WaitForExit();
+            });
 
             if(File.Exists(ProgramFolder + "\\Mod.TSPUDMOD"))
             {
@@ -192,11 +212,12 @@ namespace AlienModLoader.FileHandler
             string[] Files = Directory.GetFiles(PatchFolder, "*" + ReversedText + ".xdelta", SearchOption.AllDirectories);
             int AmmTries = 0;
             int MaxTries = Files.Length * 5;
+            bool returner = true;
 
-            foreach(string file in Files)
+            Parallel.ForEach(Files, file =>
             {
                 bool Success = false;
-                while(!Success)
+                while (!Success)
                 {
                     string ShortFile = file.Replace(PatchFolder, "");
                     Process p = new Process();
@@ -219,18 +240,18 @@ namespace AlienModLoader.FileHandler
                         Success = true;
                     }
                     AmmTries++;
-                    if(AmmTries > MaxTries)
+                    if (AmmTries > MaxTries)
                     {
                         //haha WHOOPS
                         Directory.Delete(PatchFolder, true);
-                        return false;
+                        returner = false;
                     }
                 }
-            }
+            });
 
             Directory.Delete(PatchFolder, true);
 
-            return true;
+            return returner;
         }
     }
 }
