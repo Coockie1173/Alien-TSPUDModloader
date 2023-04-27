@@ -138,6 +138,7 @@ namespace AlienModloader
 
         private void button4_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("WARNING: APPLYING A MOD CAN TAKE A MINUTE, ALONG WITH A SPIKE IN CPU AND DISK USAGE.", "WARNING");
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "*.TSPUDMOD|*.TSPUDMOD";
 

@@ -232,18 +232,25 @@ namespace AlienModLoader.FileHandler
 
                     while (!p.HasExited) { };
 
-                    if (File.Exists(GameFolder + ShortFile.Replace(ReversedText + ".xdelta", "") + "_MODIFIED"))
+                    try
                     {
-                        File.Delete(GameFolder + ShortFile.Replace(ReversedText + ".xdelta", ""));
-                        File.Copy(GameFolder + ShortFile.Replace(ReversedText + ".xdelta", "") + "_MODIFIED", GameFolder + ShortFile.Replace(ReversedText + ".xdelta", ""));
-                        File.Delete(GameFolder + ShortFile.Replace(ReversedText + ".xdelta", "") + "_MODIFIED");
-                        Success = true;
+                        if (File.Exists(GameFolder + ShortFile.Replace(ReversedText + ".xdelta", "") + "_MODIFIED"))
+                        {
+                            File.Delete(GameFolder + ShortFile.Replace(ReversedText + ".xdelta", ""));
+                            File.Copy(GameFolder + ShortFile.Replace(ReversedText + ".xdelta", "") + "_MODIFIED", GameFolder + ShortFile.Replace(ReversedText + ".xdelta", ""));
+                            File.Delete(GameFolder + ShortFile.Replace(ReversedText + ".xdelta", "") + "_MODIFIED");
+                            Success = true;
+                        }
+                        AmmTries++;
+                        if (AmmTries > MaxTries)
+                        {
+                            //haha WHOOPS
+                            Directory.Delete(PatchFolder, true);
+                            returner = false;
+                        }
                     }
-                    AmmTries++;
-                    if (AmmTries > MaxTries)
+                    catch
                     {
-                        //haha WHOOPS
-                        Directory.Delete(PatchFolder, true);
                         returner = false;
                     }
                 }
